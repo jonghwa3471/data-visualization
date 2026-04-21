@@ -1,35 +1,27 @@
-# Run this app with `python app.py` and
-# visit http://127.0.0.1:8050/ in your web browser.
-
-
 from dash import Dash, html, dcc
 import plotly.express as px
 import pandas as pd
 
-app = Dash()
+stylesheets = [
+    "https://cdn.jsdelivr.net/npm/reset-css@5.0.2/reset.min.css",
+    "https://fonts.googleapis.com/css2?family=Open+Sans&display=swap",
+]
 
-# assume you have a "long-form" data frame
-# see https://plotly.com/python/px-arguments/ for more options
-df = pd.DataFrame(
-    {
-        "Fruit": ["Apples", "Oranges", "Bananas", "Apples", "Oranges", "Bananas"],
-        "Amount": [4, 1, 2, 2, 4, 5],
-        "City": ["SF", "SF", "SF", "Montreal", "Montreal", "Montreal"],
-    }
-)
-
-fig = px.bar(df, x="Fruit", y="Amount", color="City", barmode="group")
+app = Dash(external_stylesheets=stylesheets)
 
 app.layout = html.Div(
+    style={
+        "minHeight": "100vh",
+        "backgroundColor": "#111111",
+        "color": "white",
+        "fontFamily": "Open Sans, sans-serif",
+    },
     children=[
-        html.H1(children="Hello Dash!!!"),
-        html.Div(
-            children="""
-        Dash: A web application framework for your data.
-    """
-        ),
-        dcc.Graph(id="example-graph", figure=fig),
-    ]
+        html.Header(
+            style={"textAlign": "center", "paddingTop": "50px"},
+            children=html.H1("Corona Dashboard", style={"fontSize": 40}),
+        )
+    ],
 )
 
 if __name__ == "__main__":
