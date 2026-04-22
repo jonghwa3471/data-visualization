@@ -1,8 +1,7 @@
 from dash import Dash, html
+import plotly.express as px
 from data import countries_df
 from builders import make_table
-
-print(countries_df.values)
 
 stylesheets = [
     "https://cdn.jsdelivr.net/npm/reset-css@5.0.2/reset.min.css",
@@ -20,12 +19,15 @@ app.layout = html.Div(
     },
     children=[
         html.Header(
-            style={"textAlign": "center", "paddingTop": "50px"},
+            style={"textAlign": "center", "paddingTop": "50px", "marginBottom": 100},
             children=html.H1("Corona Dashboard", style={"fontSize": 40}),
         ),
         html.Div(children=[html.Div(children=[make_table(countries_df)])]),
     ],
 )
+
+map_figure = px.scatter_geo(countries_df)
+map_figure.show()
 
 if __name__ == "__main__":
     app.run(debug=True)
