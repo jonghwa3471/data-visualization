@@ -26,7 +26,22 @@ app.layout = html.Div(
     ],
 )
 
-map_figure = px.scatter_geo(countries_df)
+map_figure = px.scatter_geo(
+    countries_df,
+    size="Confirmed",
+    hover_name="Country_Region",
+    locations="Country_Region",
+    locationmode="country names",
+    size_max=40,
+    color="Confirmed",
+    template="plotly_dark",
+    hover_data={
+        "Confirmed": ":,",
+        "Recovered": ":,",
+        "Deaths": ":,",
+        "Country_Region": False,
+    },
+)
 map_figure.show()
 
 if __name__ == "__main__":
