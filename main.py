@@ -1,6 +1,6 @@
 from dash import Dash, html, dcc, Input, Output
 import plotly.express as px
-from data import countries_df, totals_df, dropdown_options
+from data import countries_df, totals_df, dropdown_options, make_global_df
 from builders import make_table
 
 
@@ -87,7 +87,7 @@ app.layout = html.Div(
                                 for country in dropdown_options
                             ],
                         ),
-                        html.H1(id="country-output"),
+                        dcc.Graph(id="country_graph"),
                     ],
                 ),
             ],
@@ -96,9 +96,26 @@ app.layout = html.Div(
 )
 
 
-@app.callback(Output("country-output", "children"), [Input("country", "value")])
+@app.callback(Output("country_graph", "figure"), [Input("country", "value")])
 def update_hello(value):
-    print(value)
+    df = make_global_df()
+    fig = px.line(
+        df,
+        x="date",
+        y=["confirmed", "deaths", "recovered"],
+        labels={"value": "Cases", "variable": "Condition", "date": "Date"},
+        hover_data={"value": ":,", "variable": False, "date": False},
+        color_discrete_map={
+            "confirmed": "#e74c3c",
+            "deaths": "#8e44ad",
+            "recovered": "#27ae60",
+        },
+        template="plotly_dark",
+    )
+
+    fig.update_xaxes(rangeslider_visible=True)
+
+    return fig
 
 
 if __name__ == "__main__":
