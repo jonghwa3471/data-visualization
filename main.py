@@ -1,8 +1,8 @@
-from dash import Dash, html, dcc
+from dash import Dash, html, dcc, Input, Output
 import plotly.express as px
-from data import countries_df, totals_df
+from data import countries_df, totals_df, dropdown_options
 from builders import make_table
-from dash.dependencies import Input, Output
+
 
 stylesheets = [
     "https://cdn.jsdelivr.net/npm/reset-css@5.0.2/reset.min.css",
@@ -79,12 +79,9 @@ app.layout = html.Div(
                 html.Div(children=[dcc.Graph(figure=bars_graph)]),
                 html.Div(
                     children=[
-                        dcc.Input(
-                            style={"color": "black"},
-                            placeholder="What is your name?",
-                            id="hello-input",
+                        dcc.Dropdown(
+                            style={"color": "black"}, id="country", options=[]
                         ),
-                        html.H2(children="Hello Anonymous", id="hello-output"),
                     ],
                 ),
             ],
@@ -93,7 +90,7 @@ app.layout = html.Div(
 )
 
 
-@app.callback(Output("hello-output", "children"), [Input("hello-input", "value")])
+@app.callback(Output("hello-output", "children"), [Input("country", "value")])
 def update_hello(value):
     if value is None:
         return "Hello Anonymous"
