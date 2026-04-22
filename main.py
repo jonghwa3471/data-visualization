@@ -17,8 +17,10 @@ bubble_map = px.scatter_geo(
     locations="Country_Region",
     locationmode="country names",
     size_max=40,
+    title="Confirmed By Country",
     color="Confirmed",
     template="plotly_dark",
+    color_continuous_scale=px.colors.sequential.Oryel,
     projection="natural earth",
     hover_data={
         "Confirmed": ":,",
@@ -27,6 +29,16 @@ bubble_map = px.scatter_geo(
         "Country_Region": False,
     },
 )
+
+bars_graph = px.bar(
+    totals_df,
+    x="condition",
+    y="count",
+    template="plotly_dark",
+    title="Total Global Cases",
+    hover_data={"count": ":,"},
+)
+bars_graph.update_layout(xaxis=dict(title="Condition"), yaxis=dict(title="Count"))
 
 app.layout = html.Div(
     style={
@@ -46,12 +58,13 @@ app.layout = html.Div(
                 html.Div(children=[make_table(countries_df)]),
             ]
         ),
+        html.Div(
+            children=[
+                html.Div(children=[dcc.Graph(figure=bars_graph)]),
+            ]
+        ),
     ],
 )
-
-fig = px.bar(totals_df, x="condition", y="count")
-fig.show()
-
 
 if __name__ == "__main__":
     app.run(debug=True)
