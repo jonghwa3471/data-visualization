@@ -1,5 +1,6 @@
 from dash import Dash, html
 from data import countries_df
+from builders import make_table
 
 print(countries_df.values)
 
@@ -22,39 +23,7 @@ app.layout = html.Div(
             style={"textAlign": "center", "paddingTop": "50px"},
             children=html.H1("Corona Dashboard", style={"fontSize": 40}),
         ),
-        html.Div(
-            children=[
-                html.Div(
-                    children=[
-                        html.Table(
-                            children=[
-                                html.Thead(
-                                    children=[
-                                        html.Tr(
-                                            children=[
-                                                html.Th(column_name.replace("_", " "))
-                                                for column_name in countries_df.columns
-                                            ]
-                                        )
-                                    ]
-                                ),
-                                html.Tbody(
-                                    children=[
-                                        html.Tr(
-                                            children=[
-                                                html.Td(value_column)
-                                                for value_column in value
-                                            ]
-                                        )
-                                        for value in countries_df.values
-                                    ]
-                                ),
-                            ]
-                        )
-                    ]
-                )
-            ]
-        ),
+        html.Div(children=[html.Div(children=[make_table(countries_df)])]),
     ],
 )
 
