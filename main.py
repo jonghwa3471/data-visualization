@@ -16,6 +16,9 @@ stylesheets = [
 ]
 
 app = Dash(external_stylesheets=stylesheets)
+app.title = "Corona Dashboard"
+
+server = app.server
 
 bubble_map = px.scatter_geo(
     countries_df,
@@ -132,7 +135,3 @@ def update_hello(value):
     fig.update_xaxes(rangeslider_visible=True)
 
     return fig
-
-
-if __name__ == "__main__":
-    app.run(debug=True)
